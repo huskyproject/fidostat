@@ -32,6 +32,16 @@
 #include <fidoconf/fidoconf.h>
 #include <fidoconf/common.h>
 
+#define VERSION_H
+
+#include <fidoconf/version.h>
+#include <fidoconf/cvsdate.h>
+
+/* basic version number */
+#define VER_MAJOR 1
+#define VER_MINOR 3
+#define VER_PATCH 0
+#define VER_BRANCH BRANCH_CURRENT
 
 struct sessioncounttype {
        char fidoaka[50];
@@ -106,14 +116,13 @@ int main(int argc,char **argv)
    if (argc<2 || (stricmp(argv[1],"binkdstat")!=0 &&
                   stricmp(argv[1],"binkdall")!=0) )
       {
+      printf("%s\n\n", GenVersionStr("FidoStat", VER_MAJOR, VER_MINOR,
+				   VER_PATCH, VER_BRANCH, cvs_date ));
       printf(
-"FidoStat V 0.01                    Statisticgenerator by Gabriel Plutzar\n"
-"\n"
-"Syntax: fidostat <command>\n"
-"\n"
+"Log File Analyser for Binkd. Statisticgenerator by Gabriel Plutzar\n\n"
+"Syntax: fidostat <command>\n\n"
 "commands:  binkdall   Print all Binkd Polls\n"
-"           binkdstat  Print a summary of alle Binkd Polls\n"
-"\n"
+"           binkdstat  Print a summary of alle Binkd Polls\n\n"
 "You may pipe the output into a file, and post that file via hpt post\n"
 );
       exit(3);
@@ -127,9 +136,11 @@ int main(int argc,char **argv)
    sprintf(todaydate,"%02u %s",date->tm_mday,mounthstr[date->tm_mon]);
 
    printf(
-"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n"
-"   FidoStat V 0.01    Binkd Poll Statistic\n"
-"\n"
+"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+   printf("%s\tBinkd Poll Statistic\n", GenVersionStr("FidoStat",
+	  VER_MAJOR, VER_MINOR, VER_PATCH, VER_BRANCH, cvs_date ));
+
+   printf("\n"
 "   Date: %s"
 "   System: %u:%u/%u.%u, %s\n"
 "\n"
