@@ -1,5 +1,9 @@
 # $Id$
+#
 # Microsoft Visual C++ Makefile for build DLL
+# (a) Andr Luk'yanov 2:5001/7@fidonet.org
+# tested with MSVC v6.0 with sp5
+#
 
 CC	= cl
 RM	= del
@@ -12,7 +16,7 @@ CFLAGS	= -nologo -Zp1 -O2 -I../.. -I../
 COPT	= -O2
 CDEFS	= -DWIN32 -D__NT__ -D_CONSOLE -D_MAKE_DLL
 SRCDIR  = ../
-LIBS	= ../../fidoconf\fconfmvc.lib ../../smapi\smapimvc.lib \
+LIBS	= ../../fidoconf/fconfmvc.lib ../../smapi/smapimvc.lib \
 	  /link /opt:nowin98
 
 OBJS    = fidostat$(OBJ)
