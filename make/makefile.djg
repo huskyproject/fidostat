@@ -1,0 +1,48 @@
+# $Id$
+#
+# DOS DPMI makefile for DJGPP
+# (a) Andr Luk'yanov 2:5001/7@fidonet.org
+# tested with djgpp 2.03 with gcc 3.2
+#
+
+DEBUG   = 0
+
+EXE     = .exe
+CC      = gcc
+SRCDIR  = ../
+INCDIR  = ../../
+IBOPT   = -s
+
+OBJS    = fidostat.o
+LIBS    = ../../fidoconf/fconfdjg.a ../../smapi/smapidjg.a
+CDEFS   = -DMSDOS
+CFLAGS  = -c -I$(SRCDIR) -I$(INCDIR) -Wall -Wno-char-subscripts -O3 -mcpu=i486
+LFLAGS	= -s
+
+ifeq ($(DEBUG), 1)
+  CFLAGS  += -ggdb
+  LFLAGS  +=
+else
+  CFLAGS  += -s
+  LFLAGS  +=
+endif
+
+all: $(OBJS) \
+     fidostat
+
+%.o: $(SRCDIR)%.c
+	$(CC) $(CFLAGS) $(CDEFS) $(SRCDIR)$*.c
+
+fidostat: $(OBJS)
+	$(CC) $(LFLAGS) -o fidostat$(EXE) fidostat.o $(LIBS)
+ifeq ($(DEBUG), 0)
+	strip -s fidostat$(EXE)
+endif
+
+
+clean:
+	-rm -f *.o *~ *core
+
+distclean: clean
+	-rm fidostat
+	-rm *.[0-8].gz
