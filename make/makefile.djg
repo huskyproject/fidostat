@@ -11,7 +11,7 @@ CINCL  = -I../ -I../../fidoconf -I../../smapi  -I../../huskylib
 IBOPT   = -s
 
 OBJS    = fidostat.o
-LIBS    = ../../fidoconf/fconfdjg.a ../../huskylib/make/huskydjg.a
+LIBS    = ../../fidoconf/make/fconfdjg.a ../../huskylib/make/huskydjg.a
 CDEFS   = -DMSDOS
 CFLAGS  = -c -Wall -Wno-char-subscripts -O3 -mcpu=i486
 LFLAGS	= -s
