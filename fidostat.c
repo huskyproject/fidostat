@@ -29,17 +29,19 @@
 #include <string.h>
 #include <time.h>
 
+#include <huskylib/compiler.h>
+#include <huskylib/huskylib.h>
+
 #include <fidoconf/fidoconf.h>
 #include <fidoconf/common.h>
 
 #define VERSION_H
 
 #include <fidoconf/version.h>
-#include <fidoconf/cvsdate.h>
 
 /* basic version number */
 #define VER_MAJOR 1
-#define VER_MINOR 3
+#define VER_MINOR 9
 #define VER_PATCH 0
 #define VER_BRANCH BRANCH_CURRENT
 
@@ -117,7 +119,7 @@ int main(int argc,char **argv)
                   stricmp(argv[1],"binkdall")!=0) )
       {
       printf("%s\n\n", GenVersionStr("FidoStat", VER_MAJOR, VER_MINOR,
-				   VER_PATCH, VER_BRANCH, cvs_date ));
+				   VER_PATCH, VER_BRANCH, NULL ));
       printf(
 "Log File Analyser for Binkd. Statisticgenerator by Gabriel Plutzar\n\n"
 "Syntax: fidostat <command>\n\n"
