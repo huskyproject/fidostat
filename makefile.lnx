@@ -1,7 +1,8 @@
-# include Husky-Makefile-Config
-include ../huskymak.cfg
-
 CC      = gcc
+DEBUG   = 0
+INCDIR  = /usr/local/include
+BINDIR  = /usr/local/bin
+IBOPT   = -s
 
 OBJS    = fidostat.o
 
