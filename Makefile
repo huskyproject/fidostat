@@ -40,3 +40,6 @@ distclean: clean
 install:
 	$(INSTALL) $(IBOPT) fidostat$(EXE) $(BINDIR)
 
+uninstall:
+	-$(RM) $(BINDIR)$(DIRSEP)fidostat$(EXE)
+
