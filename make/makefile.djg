@@ -1,45 +1,38 @@
 # $Id$
-# Makefile to build DOS DPMI program(s) with DJGPP
+# Makefile to build FIDOSTAT/dpmi with gcc 3.x.x from DJGPP v2.03.
 # No support for the Husky build environment.
 
-DEBUG   = 0
+# include Husky-Makefile-Config,
+# copy this file from ../../huskybse/huskymak.cfg.djg
+include ../../huskymak.cfg
 
-EXE     = .exe
-CC      = gcc
-SRCDIR  = ../
-CINCL  = -I../ -I../../fidoconf -I../../smapi  -I../../huskylib
-IBOPT   = -s
+include makefile.inc
 
-OBJS    = fidostat.o
-LIBS    = ../../fidoconf/make/fconfdjg.a ../../huskylib/make/huskydjg.a
-CDEFS   = -DMSDOS
-CFLAGS  = -c -Wall -Wno-char-subscripts -O3 -mcpu=i486
-LFLAGS	= -s
+# includes directories
+CINCL= -I$(H_DIR) -I../../huskylib -I../../smapi -I../../fidoconf
 
-ifeq ($(DEBUG), 1)
-  CFLAGS  += -ggdb
-  LFLAGS  +=
-else
-  CFLAGS  += -s
-  LFLAGS  +=
-endif
+# libraries need to build binary file
+LIBS	= ../../fidoconf/make/$(LIBPREFIX)fconf$(LIBSUFFIX)$(_LIB) \
+	  ../../smapi/make/$(LIBPREFIX)smapi$(LIBSUFFIX)$(_LIB) \
+	  ../../huskylib/make/$(LIBPREFIX)husky$(LIBSUFFIX)$(_LIB)
 
-all: $(OBJS) \
-     fidostat
+READMEFILES= ../ChangeLog ../INSTALL ../COPYING ../Readme
 
-%.o: $(SRCDIR)%.c
-	$(CC) $(CFLAGS) $(CINCL) $(CDEFS) $(SRCDIR)$*.c
+default:
+	@echo
+	@echo Run \'make programs\' to build static version of programs \($(PROGRAMS)\)
+	@echo
+	@echo Run \'make all\' to build all above
 
-fidostat: $(OBJS)
-	$(CC) $(LFLAGS) -o fidostat$(EXE) fidostat.o $(LIBS)
-ifeq ($(DEBUG), 0)
-	strip -s fidostat$(EXE)
-endif
+all:	programs
 
+programs: $(PROGRAMS)
 
-clean:
-	-rm -f *.o *~ *core
+%$(_OBJ): $(_SRC_DIR)%$(_C)
+	@echo Compiling $<
+	@$(CC) $(CFLAGS) $(CDEFS) $(CINCL) $(OPTCFLAGS) $<
 
-distclean: clean
-	-rm fidostat
-	-rm *.[0-8].gz
+$(PROGRAMS): $(OBJS)
+	@echo Create $(PROGRAMS)
+	@$(CC) $(STRIP) $(CFLAGS) $(CDEFS) $(CINCL) $(EXENAMEFLAG) $@ $^ $(LIBS)
+	@strip$(_EXE) $(PROGRAMS)
