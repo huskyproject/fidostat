@@ -1,8 +1,6 @@
 # $Id$
-#
-# Microsoft Visual C++ Makefile for build DLL
-# (a) Andr Luk'yanov 2:5001/7@fidonet.org
-# tested with MSVC v6.0 with sp5
+# Microsoft Visual C++ Makefile for build dinamic program(s)
+# No support for the Husky build environment.
 #
 
 CC	= cl
@@ -12,11 +10,11 @@ EXENAMEFLAG=-Fe
 EXE	= .exe
 OBJ	= .obj
 
-CFLAGS	= -nologo -Zp1 -O2 -I../.. -I../
+CFLAGS	= -nologo -Zp1 -O2 -I../ -I../.. -I../../huskylib -I../../smapi
 COPT	= -O2
 CDEFS	= -DWIN32 -D__NT__ -D_CONSOLE -D_MAKE_DLL
 SRCDIR  = ../
-LIBS	= ../../fidoconf/fconfmvc.lib ../../smapi/smapimvc.lib \
+LIBS	= ../../fidoconf/fconfmvc.lib ../../huskylib/make/huskymvc.lib \
 	  /link /opt:nowin98
 
 OBJS    = fidostat$(OBJ)

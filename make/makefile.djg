@@ -1,22 +1,19 @@
 # $Id$
-#
-# DOS DPMI makefile for DJGPP
-# (a) Andr Luk'yanov 2:5001/7@fidonet.org
-# tested with djgpp 2.03 with gcc 3.2
-#
+# Makefile to build DOS DPMI program(s) with DJGPP
+# No support for the Husky build environment.
 
 DEBUG   = 0
 
 EXE     = .exe
 CC      = gcc
 SRCDIR  = ../
-INCDIR  = ../../
+INCDIR  = -I../ -I../../ -I../../huskylib -I../../smapi
 IBOPT   = -s
 
 OBJS    = fidostat.o
-LIBS    = ../../fidoconf/fconfdjg.a ../../smapi/smapidjg.a
+LIBS    = ../../fidoconf/fconfdjg.a ../../huskylib/make/huskydjg.a
 CDEFS   = -DMSDOS
-CFLAGS  = -c -I$(SRCDIR) -I$(INCDIR) -Wall -Wno-char-subscripts -O3 -mcpu=i486
+CFLAGS  = -c $(INCDIR) -Wall -Wno-char-subscripts -O3 -mcpu=i486
 LFLAGS	= -s
 
 ifeq ($(DEBUG), 1)

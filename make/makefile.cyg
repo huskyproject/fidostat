@@ -1,13 +1,6 @@
 # $Id$
-#
-# Win32 makefile for Cygwin
-# (a) Stas Degteff 2:5080/102 g@grumbler.org
-# tested with Cygwin 2.218.2.9
-#
-# Ussage:
-# make -f makefile.cyg
-#
-
+# Makefile to build win32 with Mingw32 from Cygwin.
+# No support for the Husky build environment.
 
 DEBUG   = 0
 
