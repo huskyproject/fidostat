@@ -1,0 +1,29 @@
+# $Id$
+# Microsoft Visual C++ Makefile for build static library
+
+CC	= cl
+RM	= del
+
+EXENAMEFLAG=-Fe
+EXE	= .exe
+OBJ	= .obj
+
+CFLAGS	= -nologo -Zp1 -O2 -I../.. -I../
+COPT	= -O2
+CDEFS	= -DWIN32 -D__NT__ -D_CONSOLE
+SRCDIR  = ../
+LIBS	= ../../fidoconf\fconfmvc.lib ../../smapi\smapimvc.lib
+
+OBJS    = fidostat$(OBJ)
+
+all: fidostat$(EXE)
+
+fidostat$(EXE): 
+	$(CC) $(CFLAGS) $(CDEFS) $(COPT) $(EXENAMEFLAG)fidostat$(EXE) $(SRCDIR)fidostat.c $(LIBS)
+
+clean:
+	$(RM) *$(OBJ)
+
+distclean: clean
+	$(RM) fidostat$(EXE)
+        
