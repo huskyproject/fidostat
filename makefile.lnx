@@ -30,7 +30,7 @@ clean:
 	-rm *.log
 
 distclean: clean
-	-rm tpkt pktinfo hpt purgeDupes tlog
+	-rm fidostat
 	-rm *.[0-8].gz
 
 install:
