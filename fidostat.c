@@ -27,13 +27,8 @@
 #include <string.h>
 #include <time.h>
 
-#ifndef MSDOS          
 #include <fidoconf/fidoconf.h>
 #include <fidoconf/common.h>
-#else                  
-#include <fidoconf/fidoconf.h>
-#include <fidoconf/common.h>
-#endif                 
 
 
 struct sessioncounttype {
