@@ -33,14 +33,64 @@
 #include "fidoconf.h"  
 #endif                 
 
+#include "common.h"  
+
 struct sessioncounttype {
-       char fromname[100];
        char fidoaka[50];
+       char fromname[100];
        int count;
        } *sessioncount;
 
 static char mounthstr[12][4]={"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug",
 "Sep","Oct","Nov","Dec"};
+
+int sessionsort(const void *a, const void *b)
+{
+    s_addr addra,addrb;
+
+    string2addr(a,&addra);
+    string2addr(b,&addrb);
+
+    if (addra.point==0 && addrb.point>0)
+       return(-1);
+
+    if (addrb.point==0 && addra.point>0)
+       return(1);
+
+    if (addra.zone!=addrb.zone)
+       {
+       if (addra.zone>addrb.zone)
+          return(1);
+         else
+          return(-1);
+       }        
+      else
+       if (addra.net!=addrb.net)
+          {
+          if (addra.net>addrb.net)
+             return(1);
+            else
+             return(-1);
+          }
+         else
+          if (addra.node!=addrb.node)
+             {
+             if (addra.node>addrb.node)
+                return(1);
+               else
+                return(-1);
+             }
+            else
+             if (addra.point!=addrb.point)
+                {
+                if (addra.point>addrb.point)
+                   return(1);
+                  else
+                   return(-1);
+                }
+
+    return(0);
+}
 
 void main(int argc,char **argv)
 {
@@ -55,7 +105,8 @@ void main(int argc,char **argv)
    int i;
    s_fidoconfig *config;
 
-   if (argc<2)
+   if (argc<2 || (stricmp(argv[1],"binkdstat")!=0 &&
+                  stricmp(argv[1],"binkdall")!=0) )
       {
       printf(
 "FidoStat V 0.01                    Statisticgenerator by Gabriel Plutzar\n"
@@ -151,10 +202,14 @@ config->addr[0].point,config->sysop);
          }
 
   if (strcasecmp(argv[1],"binkdstat")==0)
+     {
+     qsort(sessioncount,anzsession,
+           sizeof(*sessioncount),sessionsort);
+
      for (i=0;i<anzsession;i++)
          printf("%3u Sessions with %s, %s\n",sessioncount[i].count,
                 sessioncount[i].fidoaka,sessioncount[i].fromname);
-
+     }
   fclose(binkdlog);
 
   disposeConfig(config);
