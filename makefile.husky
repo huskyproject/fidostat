@@ -4,15 +4,17 @@ include ../huskymak.cfg
 OBJS    = fidostat$(OBJ)
 
 ifeq ($(DEBUG), 1)
-  CFLAGS  = -c -I../smapi -I$(INCDIR) -Wall -ggdb -O3
+  CFLAGS  = $(DEBCFLAGS) $(WARNFLAGS) -I../smapi -I$(INCDIR) 
+  LFLAGS  = $(DEBLFLAGS)
 else
-  CFLAGS  = -c -I../smapi -I$(INCDIR) -Wall -O3 -s
+  CFLAGS  = $(OPTCFLAGS) $(WARNFLGAS)-c -I../smapi -I$(INCDIR)
+  LFLAGS  = $(OPTLFLAGS)
 endif
 
 ifeq ($(SHORTNAME), 1)
-  LFLAGS  = -L$(LIBDIR) -lfidoconf -lsmapi
+  LIBS  = -L$(LIBDIR) -lfidoconf -lsmapi
 else
-  LFLAGS  = -L$(LIBDIR) -lfidoconfig -lsmapi
+  LIBS  = -L$(LIBDIR) -lfidoconfig -lsmapi
 endif
 
 CDEFS=-D$(OSTYPE) $(ADDCDEFS)
@@ -23,7 +25,7 @@ all: $(OBJS) fidostat$(EXE)
 	$(CC) $(CFLAGS) $(CDEFS) $(SRC_DIR)$*.c
 
 fidostat: $(OBJS)
-	$(CC) $(LFLAGS) -o fidostat$(EXE) fidostat$(OBJ) -lfidoconfig -lsmapi
+	$(CC) $(LFLAGS) -o fidostat$(EXE) fidostat$(OBJ) $(LIBS)
 
 clean:
 	-$(RM) *$(OBJ)

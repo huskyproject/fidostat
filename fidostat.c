@@ -92,7 +92,7 @@ int sessionsort(const void *a, const void *b)
     return(0);
 }
 
-void main(int argc,char **argv)
+int main(int argc,char **argv)
 {
    char hlp[200],*hlp1;
    char session_with[200],firstaddr[200];
@@ -213,6 +213,7 @@ config->addr[0].point,config->sysop);
   fclose(binkdlog);
 
   disposeConfig(config);
+  return 0;
 }
 
 
