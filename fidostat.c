@@ -122,7 +122,7 @@ int main(int argc,char **argv)
       exit(3);
       }
 
-   config = readConfig();
+   config = readConfig(NULL);
    if (config == NULL) exit(3);  
 
    currentTime = time(NULL);       
