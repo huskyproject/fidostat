@@ -6,9 +6,19 @@ Unix:
 
    /usr/src/packages/        -> fidostat/
                              -> fidoconfig/
+                             -> smapi/
+                             -> huskybse/
 
-1. compile and install fidostat:
+1. Read huskybse/INSTALL and other manuals, change huskymak.cfg for your system
+
+2. Compile and install fidostat:
+
 	$ make
-	$ make install
+	$ make install clean
+
+or, without huskymak.cfg:
+
+        $ make -f makefile.lnx
+        $ make -f makefile.lnx install clean
 
 You're ready. 
