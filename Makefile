@@ -28,18 +28,18 @@ fidostat: $(OBJS)
 	$(CC) $(LFLAGS) -o fidostat$(EXE) fidostat$(OBJ) $(LIBS)
 
 clean:
-	-$(RM) *$(OBJ)
-	-$(RM) *~
-	-$(RM) core
-	-$(RM) *.log
+	-$(RM) $(RMOPT) *$(OBJ)
+	-$(RM) $(RMOPT) *~
+	-$(RM) $(RMOPT) core
+	-$(RM) $(RMOPT) *.log
 
 distclean: clean
-	-$(RM) fidostat$(EXE)
-	-$(RM) *.[0-8].gz
+	-$(RM) $(RMOPT) fidostat$(EXE)
+	-$(RM) $(RMOPT) *.[0-8].gz
 
 install:
 	$(INSTALL) $(IBOPT) fidostat$(EXE) $(BINDIR)
 
 uninstall:
-	-$(RM) $(BINDIR)$(DIRSEP)fidostat$(EXE)
+	-$(RM) $(RMOPT) $(BINDIR)$(DIRSEP)fidostat$(EXE)
 
