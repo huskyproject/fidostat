@@ -1,6 +1,9 @@
 # $Id$
-# Microsoft Visual C++ Makefile for build dinamic program(s)
+#
+# Microsoft Visual C++ Makefile for build dinamic library, dll and program(s)
 # No support for the Husky build environment.
+#
+# Tested on MS Visual C 6.0
 #
 
 CC	= cl
@@ -15,7 +18,7 @@ CINCL	= -I../../fidoconf -I../../smapi -I../../huskylib
 COPT	= -O2
 CDEFS	= -DWIN32 -D__NT__ -D_CONSOLE -D_MAKE_DLL
 SRCDIR  = ../
-LIBS	= ../../fidoconf/fconfmvc.lib ../../huskylib/make/huskymvc.lib \
+LIBS	= ../../fidoconf/make/fconfmvc.lib ../../huskylib/make/huskymvc.lib \
 	  /link /opt:nowin98
 
 OBJS    = fidostat$(OBJ)
