@@ -1,37 +1,77 @@
 # $Id$
 #
-# Microsoft Visual C++ Makefile for build dinamic library, dll and program(s)
+# Microsoft Visual C++ Makefile for build dinamic program(s)
 # No support for the Husky build environment.
 #
 # Tested on MS Visual C 6.0
 #
+include makefile.inc
 
+# Version
+VERMAJOR= 1
+VERMINOR= 9
+VERPATCH= 0
+VERH	= $(VERMAJOR).$(VERMINOR)
+VER	= $(VERH).$(VERPATCH)
+
+## programs ##
 CC	= cl
+AR	= lib
+LINK	= link
+RANLIB	=
 RM	= del
 
-EXENAMEFLAG=-Fe
-EXE	= .exe
-OBJ	= .obj
+## file suffixes ##
+_C	  = .c
+_OBJ	  = .obj
+_EXP	  = .exp
+_LIB	  = .lib
+_DLL	  = .dll 
+_EXE	  = .exe
 
-CFLAGS	= -nologo -Zp1 -O2
-CINCL	= -I../../fidoconf -I../../smapi -I../../huskylib
-COPT	= -O2
-CDEFS	= -DWIN32 -D__NT__ -D_CONSOLE -D_MAKE_DLL
-SRCDIR  = ../
-LIBS	= ../../fidoconf/make/fconfmvc.lib ../../huskylib/make/huskymvc.lib \
-	  /link /opt:nowin98
+## programs ##
+CFLAGS	= -nologo -MD -Zp1
+CINCL	= -I$(H_DIR) -I..\..\fidoconf -I..\..\smapi -I..\..\huskylib
+CDEFS	= -D__NT__ -DNT -DWINNT -DWIN32 -D_CONSOLE
+COPT	= -Ob2
 
-OBJS    = fidostat$(OBJ)
+EXEFLAGS= /link /opt:nowin98
+EXENAMEFLAG = -Fe
 
-all: fidostat$(EXE)
+LIBS	= ..\..\fidoconf\make\fconfmvc.lib ..\..\huskylib\make\huskymvc.lib \
+	  USER32.LIB msvcrt.lib Kernel32.lib
 
-fidostat$(EXE): 
-	$(CC) $(CFLAGS) $(CINCL) $(CDEFS) $(COPT) \
-	$(EXENAMEFLAG)fidostat$(EXE) $(SRCDIR)fidostat.c $(LIBS)
+default:
+	@echo Run 'make programs' to build dinamic version of programs ($(PROGRAMS))
+	@echo Run 'make all' to build all above
+
+all: programs
+programs: $(PROGRAMS)
+
+{$(_SRC_DIR)}$(_C)$(_OBJ):
+	@$(CC) $(CFLAGS) $(CINCL) $(CDEFS) $(COPT) -c $<
+
+$(PROGRAMS): $(OBJS)
+	@echo Create $(PROGRAMS)...
+	@$(CC) $(CFLAGS) $(CINCL) $(COPT) $(CDEFS) $(EXENAMEFLAG)$@ $**  $(LIBS) $(EXEFLAGS)
+
+man:
+
+doc: man
+	man2html$(_EXE) <..\$(LIBNAME).1 >$(LIBNAME).html
 
 clean:
-	$(RM) *$(OBJ)
+	-$(RM) $(RMOPT) *$(_OBJ)
 
 distclean: clean
-	$(RM) fidostat$(EXE)
-        
+	-$(RM) $(RMOPT) $(PROGRAMS)
+	-$(RM) $(RMOPT) $(LIBNAME).html
+
+install: programs doc
+	$(INSTALL) $(IBOPT) $(PROGRAMS) $(BINDIR)
+	$(INSTALL) $(IBOPT) ..\$(LIBNAME).1 $(DOCDIR)
+	$(INSTALL) $(IBOPT) $(LIBNAME).html $(DOCDIR)
+
+uninstall:
+	-$(RM) $(RMOPT) $(BINDIR)\$(PROGRAMS)
+	-$(RM) $(RMOPT) $(DOCDIR)\$(LIBNAME).html
