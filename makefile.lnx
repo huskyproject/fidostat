@@ -1,0 +1,37 @@
+# include Husky-Makefile-Config
+include ../huskymak.cfg
+
+CC      = gcc
+
+OBJS    = fidostat.o
+
+ifeq ($(DEBUG), 1)
+  CFLAGS  = -c -I$(INCDIR) -Wall -ggdb -O3 -DUNIX
+  LFLAGS  = -L$(LIBDIR)
+else
+  CFLAGS  = -c -I$(INCDIR) -Wall -O3 -s -DUNIX
+  LFLAGS  = -L$(LIBDIR)
+endif
+
+all: $(OBJS) \
+     fidostat
+
+%.o: $(SRC_DIR)%.c
+	$(CC) $(CFLAGS) $(SRC_DIR)$*.c
+
+fidostat: $(OBJS)
+	$(CC) $(LFLAGS) -o fidostat fidostat.o -lfidoconfig -lsmapilnx
+
+clean:
+	-rm -f *.o
+	-rm *~
+	-rm core
+	-rm *.log
+
+distclean: clean
+	-rm tpkt pktinfo hpt purgeDupes tlog
+	-rm *.[0-8].gz
+
+install:
+	install $(IBOPT) fidostat $(BINDIR)
+
