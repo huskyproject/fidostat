@@ -7,13 +7,13 @@ DEBUG   = 0
 EXE     = .exe
 CC      = gcc
 SRCDIR  = ../
-INCDIR  = -I../ -I../../ -I../../huskylib -I../../smapi
+CINCL  = -I../ -I../../fidoconf -I../../smapi  -I../../huskylib
 IBOPT   = -s
 
 OBJS    = fidostat.o
 LIBS    = ../../fidoconf/fconfdjg.a ../../huskylib/make/huskydjg.a
 CDEFS   = -DMSDOS
-CFLAGS  = -c $(INCDIR) -Wall -Wno-char-subscripts -O3 -mcpu=i486
+CFLAGS  = -c -Wall -Wno-char-subscripts -O3 -mcpu=i486
 LFLAGS	= -s
 
 ifeq ($(DEBUG), 1)
@@ -28,7 +28,7 @@ all: $(OBJS) \
      fidostat
 
 %.o: $(SRCDIR)%.c
-	$(CC) $(CFLAGS) $(CDEFS) $(SRCDIR)$*.c
+	$(CC) $(CFLAGS) $(CINCL) $(CDEFS) $(SRCDIR)$*.c
 
 fidostat: $(OBJS)
 	$(CC) $(LFLAGS) -o fidostat$(EXE) fidostat.o $(LIBS)

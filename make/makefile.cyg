@@ -7,14 +7,14 @@ DEBUG   = 0
 EXE     = .exe
 CC      = gcc
 SRCDIR  = ../
-INCDIR  = ../../
+CINCL   = -I../../fidoconf -I../../smapi -I../../huskylib
 LIBDIRS = -L../../fidoconf -L../../smapi
 IBOPT   = -s
 
 OBJS    = fidostat.o
 LIBS    = -lfidoconfigcyg -lsmapicyg
 CDEFS   = -D__NT__
-CFLAGS  = -c -I$(INCDIR) -Wall -O3 -pedantic -mno-cygwin
+CFLAGS  = -c -Wall -O3 -pedantic -mno-cygwin
 LFLAGS  = -mno-cygwin
 
 ifeq ($(DEBUG), 1)
@@ -29,7 +29,7 @@ all: $(OBJS) \
      fidostat
 
 %.o: $(SRCDIR)%.c
-	$(CC) $(CFLAGS) $(CDEFS) $(SRCDIR)$*.c
+	$(CC) $(CFLAGS) $(CINCL) $(CDEFS) $(SRCDIR)$*.c
 
 fidostat: $(OBJS)
 	$(CC) $(LFLAGS) $(LIBDIRS) -o fidostat$(EXE) fidostat.o $(LIBS)

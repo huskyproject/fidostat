@@ -9,7 +9,8 @@ EXENAMEFLAG=-Fe
 EXE	= .exe
 OBJ	= .obj
 
-CFLAGS	= -nologo -Zp1 -O2 -I../ -I../../huskylib -I../../smapi
+CFLAGS	= -nologo -Zp1 -O2
+CINCL	= -I../../fidoconf -I../../smapi -I../../huskylib
 COPT	= -O2
 CDEFS	= -DWIN32 -D__NT__ -D_CONSOLE
 SRCDIR  = ../
@@ -20,7 +21,8 @@ OBJS    = fidostat$(OBJ)
 all: fidostat$(EXE)
 
 fidostat$(EXE): 
-	$(CC) $(CFLAGS) $(CDEFS) $(COPT) $(EXENAMEFLAG)fidostat$(EXE) $(SRCDIR)fidostat.c $(LIBS)
+	$(CC) $(CFLAGS) $(CINCL) $(CDEFS) $(COPT) \
+	$(EXENAMEFLAG)fidostat$(EXE) $(SRCDIR)fidostat.c $(LIBS)
 
 clean:
 	$(RM) *$(OBJ)

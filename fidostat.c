@@ -37,7 +37,9 @@
 
 #define VERSION_H
 
-#include <fidoconf/version.h>
+#include <cvsdate.h>
+
+/* #include <fidoconf/version.h>*/
 
 /* basic version number */
 #define VER_MAJOR 1
@@ -119,7 +121,7 @@ int main(int argc,char **argv)
                   stricmp(argv[1],"binkdall")!=0) )
       {
       printf("%s\n\n", GenVersionStr("FidoStat", VER_MAJOR, VER_MINOR,
-				   VER_PATCH, VER_BRANCH, NULL ));
+				   VER_PATCH, VER_BRANCH, cvs_date ));
       printf(
 "Log File Analyser for Binkd. Statisticgenerator by Gabriel Plutzar\n\n"
 "Syntax: fidostat <command>\n\n"
@@ -140,7 +142,7 @@ int main(int argc,char **argv)
    printf(
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
    printf("%s\tBinkd Poll Statistic\n", GenVersionStr("FidoStat",
-	  VER_MAJOR, VER_MINOR, VER_PATCH, VER_BRANCH, cvs_date ));
+	  VER_MAJOR, VER_MINOR, VER_PATCH, VER_BRANCH, cvs_date));
 
    printf("\n"
 "   Date: %s"
