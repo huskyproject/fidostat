@@ -1,37 +1,40 @@
 # include Husky-Makefile-Config
 include ../huskymak.cfg
 
-OBJS    = fidostat.$(OBJ)
+OBJS    = fidostat$(OBJ)
 
 ifeq ($(DEBUG), 1)
-  CFLAGS  = -c -I$(INCDIR) -Wall -ggdb -O3
-  LFLAGS  = -L$(LIBDIR)
+  CFLAGS  = -c -I../smapi -I$(INCDIR) -Wall -ggdb -O3
 else
-  CFLAGS  = -c -I$(INCDIR) -Wall -O3 -s
-  LFLAGS  = -L$(LIBDIR)
+  CFLAGS  = -c -I../smapi -I$(INCDIR) -Wall -O3 -s
+endif
+
+ifeq ($(SHORTNAME), 1)
+  LFLAGS  = -L$(LIBDIR) -lfidoconf -lsmapi
+else
+  LFLAGS  = -L$(LIBDIR) -lfidoconfig -lsmapi
 endif
 
 CDEFS=-D$(OSTYPE) $(ADDCDEFS)
 
-all: $(OBJS) \
-     fidostat
+all: $(OBJS) fidostat$(EXE)
 
 %.o: $(SRC_DIR)%.c
 	$(CC) $(CFLAGS) $(CDEFS) $(SRC_DIR)$*.c
 
 fidostat: $(OBJS)
-	$(CC) $(LFLAGS) -o fidostat fidostat.o -lfidoconfig -lsmapi
+	$(CC) $(LFLAGS) -o fidostat$(EXE) fidostat$(OBJ) -lfidoconfig -lsmapi
 
 clean:
-	-rm -f *.o
-	-rm *~
-	-rm core
-	-rm *.log
+	-$(RM) *$(OBJ)
+	-$(RM) *~
+	-$(RM) core
+	-$(RM) *.log
 
 distclean: clean
-	-rm tpkt pktinfo hpt purgeDupes tlog
-	-rm *.[0-8].gz
+	-$(RM) fidostat$(EXE)
+	-$(RM) *.[0-8].gz
 
 install:
-	install $(IBOPT) fidostat $(BINDIR)
+	$(INSTALL) $(IBOPT) fidostat$(EXE) $(BINDIR)
 
