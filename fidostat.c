@@ -28,12 +28,13 @@
 #include <time.h>
 
 #ifndef MSDOS          
-#include "fidoconfig.h"
+#include <fidoconfig/fidoconfig.h>
+#include <fidoconfig/common.h>
 #else                  
-#include "fidoconf.h"  
+#include <fidoconf/fidoconf.h>
+#include <fidoconf/common.h>
 #endif                 
 
-#include "common.h"  
 
 struct sessioncounttype {
        char fidoaka[50];

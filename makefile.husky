@@ -4,10 +4,10 @@ include ../huskymak.cfg
 OBJS    = fidostat$(OBJ)
 
 ifeq ($(DEBUG), 1)
-  CFLAGS  = $(DEBCFLAGS) $(WARNFLAGS) -I../smapi -I$(INCDIR) 
+  CFLAGS  = $(DEBCFLAGS) $(WARNFLAGS) -I$(INCDIR)
   LFLAGS  = $(DEBLFLAGS)
 else
-  CFLAGS  = $(OPTCFLAGS) $(WARNFLGAS)-c -I../smapi -I$(INCDIR)
+  CFLAGS  = $(OPTCFLAGS) $(WARNFLGAS)-c -I$(INCDIR)
   LFLAGS  = $(OPTLFLAGS)
 endif
 
