@@ -1,0 +1,53 @@
+# $Id$
+#
+# Win32 makefile for Cygwin
+# (a) Stas Degteff 2:5080/102 g@grumbler.org
+# tested with Cygwin 2.218.2.9
+#
+# Ussage:
+# make -f makefile.cyg
+#
+
+
+DEBUG   = 0
+
+EXE     = .EXE
+CC      = gcc
+SRCDIR  = ../
+INCDIR  = ../../
+LIBDIRS = -L../../fidoconf -L../../smapi
+IBOPT   = -s
+
+OBJS    = fidostat.o
+LIBS    = -lfidoconfigcyg -lsmapicyg
+CDEFS   = -D__NT__
+CFLAGS  = -c -I$(INCDIR) -Wall -O3 -pedantic -mno-cygwin
+LFLAGS  = -mno-cygwin
+
+ifeq ($(DEBUG), 1)
+  CFLAGS  += -ggdb
+  LFLAGS  +=
+else
+  CFLAGS  += -s
+  LFLAGS  +=
+endif
+
+all: $(OBJS) \
+     fidostat
+
+%.o: $(SRCDIR)%.c
+	$(CC) $(CFLAGS) $(CDEFS) $(SRCDIR)$*.c
+
+fidostat: $(OBJS)
+	$(CC) $(LFLAGS) $(LIBDIRS) -o fidostat$(EXE) fidostat.o $(LIBS)
+ifeq ($(DEBUG), 0)
+	strip -s fidostat$(EXE)
+endif
+
+
+clean:
+	-rm -f *.o *~ *core
+
+distclean: clean
+	-rm fidostat
+	-rm *.[0-8].gz
