@@ -17,5 +17,5 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 - Initial release of the project
 
-[Unreleased]: https://github.com/olivierlacan/keep-a-changelog/compare/1999-02-21...HEAD
-[1999-02-21]: https://github.com/olivierlacan/keep-a-changelog/compare/1999-02-18...1999-02-21
+[Unreleased]: https://github.com/njonchee/fidostat/compare/1999-02-21...HEAD
+[1999-02-21]: https://github.com/njonchee/fidostat/compare/1999-02-18...1999-02-21
