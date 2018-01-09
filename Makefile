@@ -1,7 +1,7 @@
 # include Husky-Makefile-Config
 include ../huskymak.cfg
 
-OBJS    = fidostat$(OBJ)
+OBJS    = fidostat$(_OBJ)
 
 ifeq ($(DEBUG), 1)
   CFLAGS  = $(DEBCFLAGS) $(WARNFLAGS) -I$(INCDIR)
@@ -12,34 +12,34 @@ else
 endif
 
 ifeq ($(SHORTNAME), 1)
-  LIBS  = -L$(LIBDIR) -lfidoconf -lsmapi
+  LIBS  = -L$(LIBDIR) -lfidoconf -lhusky -lsmapi
 else
-  LIBS  = -L$(LIBDIR) -lfidoconfig -lsmapi
+  LIBS  = -L$(LIBDIR) -lfidoconfig -lhusky -lsmapi
 endif
 
 CDEFS=-D$(OSTYPE) $(ADDCDEFS)
 
-all: $(OBJS) fidostat$(EXE)
+all: $(OBJS) fidostat$(_EXE)
 
 %.o: $(SRC_DIR)%.c
 	$(CC) $(CFLAGS) $(CDEFS) $(SRC_DIR)$*.c
 
 fidostat: $(OBJS)
-	$(CC) $(LFLAGS) -o fidostat$(EXE) fidostat$(OBJ) $(LIBS)
+	$(CC) $(LFLAGS) -o fidostat$(_EXE) fidostat$(_OBJ) $(LIBS)
 
 clean:
-	-$(RM) $(RMOPT) *$(OBJ)
+	-$(RM) $(RMOPT) *$(_OBJ)
 	-$(RM) $(RMOPT) *~
 	-$(RM) $(RMOPT) core
 	-$(RM) $(RMOPT) *.log
 
 distclean: clean
-	-$(RM) $(RMOPT) fidostat$(EXE)
+	-$(RM) $(RMOPT) fidostat$(_EXE)
 	-$(RM) $(RMOPT) *.[0-8].gz
 
 install:
-	$(INSTALL) $(IBOPT) fidostat$(EXE) $(BINDIR)
+	$(INSTALL) $(IBOPT) fidostat$(_EXE) $(BINDIR)
 
 uninstall:
-	-$(RM) $(RMOPT) $(BINDIR)$(DIRSEP)fidostat$(EXE)
+	-$(RM) $(RMOPT) $(BINDIR)$(DIRSEP)fidostat$(_EXE)
 

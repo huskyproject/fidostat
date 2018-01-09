@@ -37,7 +37,7 @@
 
 #define VERSION_H
 
-#include <cvsdate.h>
+#include "cvsdate.h"
 
 /* #include <fidoconf/version.h>*/
 
@@ -60,8 +60,12 @@ int sessionsort(const void *a, const void *b)
 {
     hs_addr addra,addrb;
 
-    string2addr(a,&addra);
-    string2addr(b,&addrb);
+	// Initialize all struct members to 0 in order to prevent occasional strange sorting behavior:
+	memset(&addra, 0, sizeof(hs_addr));
+	memset(&addrb, 0, sizeof(hs_addr));
+
+	parseFtnAddrZS(a, &addra);
+	parseFtnAddrZS(b, &addrb);
 
     if (addra.point==0 && addrb.point>0)
        return(-1);
