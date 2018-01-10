@@ -1,8 +1,6 @@
 # Hello!
 
-This is **fidostat**, a quick hack of a log file analyser for the binkd TCP/IP
-FTN mailer. It is intended to be used for seeing which systems have polled (or
-have been polled by) the user's system today. For example:
+This is **fidostat**, a quick hack of a log file analyser for the binkd TCP/IP FTN mailer. It is intended to be used for seeing which systems have polled (or have been polled by) the user's system today. For example:
 
 ```
 $ fidostat binkdstat
@@ -22,9 +20,7 @@ FidoStat/lnx 1.9.0-cur 09-01-18 Binkd Poll Statistic
   8 Sessions with 2:292/8125@fidonet, cust-194-216-110-94.dyn.as47377.net [94.110.216.194] (1564)
 ```
 
-Such reports are sent to standard output by default, but can easily be
-redirected to a file or piped to another program in order to, e.g., post the
-report in your local statistics echo. For example:
+Such reports are sent to standard output by default, but can easily be redirected to a file or piped to another program in order to, e.g., post the report in your local statistics echo. For example:
 
 ```bash
 # Redirect to file and post to local echo:
@@ -39,13 +35,6 @@ Alternatively:
 fidostat binkdstat | hpt post -s "Daily binkd statistics" -e "MILLENNIUM_STATS" -x -
 ```
 
-The programm can't do much at the time of writing, but perhaps it will be
-a universal tool one day :)
+Statistics are computed based on the log file ``binkd.log``, which is searched in your standard husky log directory (cf. the ``FidonetLogsDir`` variable in your husky configuration file.
 
-The logfile binkd.cfg is searched in your standart fidoconfig logfile
-directory.
-
-Have phun,
-     Gabriel Plutzar
-
-gabriel@hit.priv.at, 2:31/1
+Development of this program was started (back in 1999) by [Gabriel Plutzar](mailto:gabriel@hit.priv.at), 2:31/1. As Gabriel is no longer active in FidoNet, the program is currently maintained by [Niels Joncheere](https://github.com/njonchee), 2:292/789.
