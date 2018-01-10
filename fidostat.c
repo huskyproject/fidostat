@@ -82,28 +82,28 @@ int sessionsort(const void* a, const void* b)
 
 int main(int argc,char **argv)
 {
-   char hlp[200],*hlp1;
-   char session_with[200],firstaddr[200];
-   int getaddr=0;
-   FILE *binkdlog;
-   int i;
+	char hlp[200];
+	char* hlp1;
+	char session_with[200];
+	char firstaddr[200];
+	int getaddr = 0;
+	FILE* binkdlog;
+	int i;
 
 	char* version_str = GenVersionStr("fidostat", FC_VER_MAJOR, FC_VER_MINOR,
 			FC_VER_PATCH, FC_VER_BRANCH, cvs_date);
 
-   if (argc<2 || (stricmp(argv[1],"binkdstat")!=0 &&
-                  stricmp(argv[1],"binkdall")!=0) )
-      {
+	if (argc != 2 || (stricmp(argv[1], "binkdall") != 0 && stricmp(argv[1], "binkdstat") != 0)) {
 		printf("%s\n\n", version_str);
-      printf(
+		printf(
 "Log File Analyser for Binkd. Statisticgenerator by Gabriel Plutzar\n\n"
 "Syntax: fidostat <command>\n\n"
 "commands:  binkdall   Print all Binkd Polls\n"
 "           binkdstat  Print a summary of alle Binkd Polls\n\n"
 "You may pipe the output into a file, and post that file via hpt post\n"
 );
-      exit(3);
-      }
+		exit(3);
+	}
 
 	s_fidoconfig* config = readConfig(NULL);
 	if (config == NULL)
@@ -131,46 +131,43 @@ int main(int argc,char **argv)
 
 	session_count_type* nodes = malloc(500 * sizeof(session_count_type));
 
-   strcpy(hlp,config->logFileDir);
-   strcat(hlp,"/binkd.log");
-   binkdlog=fopen(hlp,"r");
+	strcpy(hlp, config->logFileDir);
+	strcat(hlp, "/binkd.log");
+	binkdlog = fopen(hlp, "r");
 
-   if (binkdlog==NULL)
-      {
-      printf("Cannot open %s !\n",hlp);
-      exit(3);
-      }
+	if (binkdlog == NULL) {
+		printf("Cannot open %s !\n", hlp);
+		exit(3);
+	}
 
 	int session_found;
 	size_t node_count = 0;
-   while (!feof(binkdlog))
-         {
-         fgets(hlp,200,binkdlog);
-         hlp[strlen(hlp)-1]=0;
+	while (!feof(binkdlog)) {
+
+		fgets(hlp, 200, binkdlog);
+		hlp[strlen(hlp) - 1] = 0;
 
 		if (strncmp(hlp + 2, current_date_str, 6) != 0)
 			continue;
 
-         hlp1=strstr(hlp,"session with ");
-         if (hlp1 != NULL)
-            {
-            /* Got New Session with LogFile Part - let's get the session
-               and the first Fido Address */
-            getaddr=1;
-			strcpy(session_with, hlp1 + 13);
-            continue;
-            }
+		hlp1 = strstr(hlp, "session with ");
+		if (hlp1 != NULL) {
+			// We have found a new session
+			getaddr = 1;
+			strcpy(session_with, hlp1 + 13); // For example: "78-66-161-203-no236.tbcn.telia.com [78.66.161.203] (2996)"
+			continue;
+		}
 
+		hlp1 = strstr(hlp, "addr: ");
+		if (hlp1 != NULL && getaddr == 1) {
 
-         hlp1=strstr(hlp,"addr: ");
-         if (hlp1 != NULL && getaddr==1)
-            {
-            getaddr=0;
+			getaddr = 0;
 			strcpy(firstaddr, hlp1 + 6);
 
-            if (strcasecmp(argv[1],"binkdall")==0)
-               printf("%s, %s\n",session_with,firstaddr);
-            
+			if (strcasecmp(argv[1], "binkdall") == 0) {
+				printf("%s, %s\n", session_with, firstaddr);
+			}
+
 			session_found = 0;
 			for (i = 0; i < node_count && i < 499; i++) {
 				if (strcmp(firstaddr, nodes[i].node_aka) == 0) {
