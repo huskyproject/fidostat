@@ -33,19 +33,9 @@
 #include <huskylib/huskylib.h>
 
 #include <fidoconf/fidoconf.h>
-#include <fidoconf/common.h>
-
-#define VERSION_H
+#include <fidoconf/version.h>
 
 #include "cvsdate.h"
-
-/* #include <fidoconf/version.h>*/
-
-/* basic version number */
-#define VER_MAJOR 1
-#define VER_MINOR 9
-#define VER_PATCH 0
-#define VER_BRANCH BRANCH_CURRENT
 
 struct sessioncounttype {
        char fidoaka[50];
@@ -121,11 +111,13 @@ int main(int argc,char **argv)
    int i;
    s_fidoconfig *config;
 
+	char* version_str = GenVersionStr("fidostat", FC_VER_MAJOR, FC_VER_MINOR,
+			FC_VER_PATCH, FC_VER_BRANCH, cvs_date);
+
    if (argc<2 || (stricmp(argv[1],"binkdstat")!=0 &&
                   stricmp(argv[1],"binkdall")!=0) )
       {
-      printf("%s\n\n", GenVersionStr("FidoStat", VER_MAJOR, VER_MINOR,
-				   VER_PATCH, VER_BRANCH, cvs_date ));
+		printf("%s\n\n", version_str);
       printf(
 "Log File Analyser for Binkd. Statisticgenerator by Gabriel Plutzar\n\n"
 "Syntax: fidostat <command>\n\n"
@@ -145,8 +137,7 @@ int main(int argc,char **argv)
 
    printf(
 "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
-   printf("%s\tBinkd Poll Statistic\n", GenVersionStr("FidoStat",
-	  VER_MAJOR, VER_MINOR, VER_PATCH, VER_BRANCH, cvs_date));
+	printf("%s - Log file analyser for binkd\n", version_str);
 
    printf("\n"
 "   Date: %s"
