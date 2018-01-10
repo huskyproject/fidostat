@@ -19,26 +19,29 @@ endif
 
 CDEFS=-D$(OSTYPE) $(ADDCDEFS)
 
-all: $(OBJS) fidostat$(_EXE)
+all: fidostat$(_EXE) fidostat.1.gz
 
 %.o: $(SRC_DIR)%.c
 	$(CC) $(CFLAGS) $(CDEFS) $(SRC_DIR)$*.c
 
-fidostat: $(OBJS)
+fidostat$(_EXE): $(OBJS)
 	$(CC) $(LFLAGS) -o fidostat$(_EXE) fidostat$(_OBJ) $(LIBS)
+
+fidostat.1.gz:	man/fidostat.1
+	gzip -c $^ >$@
 
 clean:
 	-$(RM) $(RMOPT) *$(_OBJ)
-	-$(RM) $(RMOPT) *~
-	-$(RM) $(RMOPT) core
-	-$(RM) $(RMOPT) *.log
+	-$(RM) $(RMOPT) fidostat.1.gz
 
 distclean: clean
 	-$(RM) $(RMOPT) fidostat$(_EXE)
-	-$(RM) $(RMOPT) *.[0-8].gz
 
 install:
 	$(INSTALL) $(IBOPT) fidostat$(_EXE) $(BINDIR)
+	-$(MKDIR) $(MKDIROPT) $(DESTDIR)$(MANDIR)
+	-$(MKDIR) $(MKDIROPT) $(DESTDIR)$(MANDIR)/man1
+	$(INSTALL) $(IMOPT) fidostat.1.gz $(DESTDIR)$(MANDIR)/man1
 
 uninstall:
 	-$(RM) $(RMOPT) $(BINDIR)$(DIRSEP)fidostat$(_EXE)
