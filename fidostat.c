@@ -80,7 +80,18 @@ int sessionsort(const void* a, const void* b)
 	return 0;
 }
 
-int main(int argc,char **argv)
+int valid_args(int argc, char* argv[])
+{
+	if (argc == 2) {
+		if (stricmp(argv[1], "binkdall") == 0)
+			return 1;
+		if (stricmp(argv[1], "binkdstat") == 0)
+			return 1;
+	}
+	return 0;
+}
+
+int main(int argc, char* argv[])
 {
 	char hlp[200];
 	char* hlp1;
@@ -93,16 +104,15 @@ int main(int argc,char **argv)
 	char* version_str = GenVersionStr("fidostat", FC_VER_MAJOR, FC_VER_MINOR,
 			FC_VER_PATCH, FC_VER_BRANCH, cvs_date);
 
-	if (argc != 2 || (stricmp(argv[1], "binkdall") != 0 && stricmp(argv[1], "binkdstat") != 0)) {
-		printf("%s\n\n", version_str);
-		printf(
-"Log File Analyser for Binkd. Statisticgenerator by Gabriel Plutzar\n\n"
-"Syntax: fidostat <command>\n\n"
-"commands:  binkdall   Print all Binkd Polls\n"
-"           binkdstat  Print a summary of alle Binkd Polls\n\n"
-"You may pipe the output into a file, and post that file via hpt post\n"
-);
-		exit(3);
+	if (!valid_args(argc, argv)) {
+		fprintf(stderr, "%s - Log file analyser for binkd\n", version_str);
+		fprintf(stderr, "Copyright (c) 1999 Gabriel Plutzar\n");
+		fprintf(stderr, "\n");
+		fprintf(stderr, "USAGE: fidostat <option>\n");
+		fprintf(stderr, "\n");
+		fprintf(stderr, "   options:  binkdall   List all binkd connections (one line per connection)\n");
+		fprintf(stderr, "             binkdstat  Summarize binkd connections (one line per node)\n");
+		return EXIT_FAILURE;
 	}
 
 	s_fidoconfig* config = readConfig(NULL);
