@@ -43,8 +43,8 @@ struct sessioncounttype {
        int count;
        } *sessioncount;
 
-static char mounthstr[12][4]={"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug",
-"Sep","Oct","Nov","Dec"};
+static char month_names[12][4] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                                   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
 int sessionsort(const void *a, const void *b)
 {
@@ -102,14 +102,10 @@ int main(int argc,char **argv)
 {
    char hlp[200],*hlp1;
    char session_with[200],firstaddr[200];
-   char todaydate[20];
    int getaddr=0;
    FILE *binkdlog;
-   struct tm *date;      
-   time_t currentTime;
    int anzsession=0,sessionfound;
    int i;
-   s_fidoconfig *config;
 
 	char* version_str = GenVersionStr("fidostat", FC_VER_MAJOR, FC_VER_MINOR,
 			FC_VER_PATCH, FC_VER_BRANCH, cvs_date);
@@ -128,26 +124,26 @@ int main(int argc,char **argv)
       exit(3);
       }
 
-   config = readConfig(NULL);
-   if (config == NULL) exit(3);  
+	s_fidoconfig* config = readConfig(NULL);
+	if (config == NULL)
+		exit(3);
 
-   currentTime = time(NULL);       
-   date = localtime(&currentTime); 
-   sprintf(todaydate,"%02u %s",date->tm_mday,mounthstr[date->tm_mon]);
+	time_t current_time = time(NULL);
+	struct tm* current_date = localtime(&current_time);
+	char current_date_str[7];
+	sprintf(current_date_str, "%02u %s", current_date->tm_mday,
+			month_names[current_date->tm_mon]); // For example: "09 Jan"
 
-   printf(
-"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+	printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
 	printf("%s - Log file analyser for binkd\n", version_str);
-
-   printf("\n"
-"   Date: %s"
-"   System: %u:%u/%u.%u, %s\n"
-"\n"
-"-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n"
-"\n",
-ctime(&currentTime),
-config->addr[0].zone,config->addr[0].net, config->addr[0].node,
-config->addr[0].point,config->sysop);
+	printf("\n");
+	printf("   Date:   %s", ctime(&current_time));
+	printf("   System: %u:%u/%u.%u, %s\n", config->addr[0].zone,
+			config->addr[0].net, config->addr[0].node, config->addr[0].point,
+			config->sysop);
+	printf("\n");
+	printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+	printf("\n");
 
    sessioncount=malloc(500*sizeof(*sessioncount));
 
@@ -166,8 +162,8 @@ config->addr[0].point,config->sysop);
          fgets(hlp,200,binkdlog);
          hlp[strlen(hlp)-1]=0;
 
-         if (strncmp(hlp+2,todaydate,6)!=0)
-            continue;
+		if (strncmp(hlp + 2, current_date_str, 6) != 0)
+			continue;
 
          hlp1=strstr(hlp,"session with ");
          if (hlp1 != NULL)
