@@ -37,4 +37,4 @@ fidostat binkdstat | hpt post -s "Daily binkd statistics" -e "MILLENNIUM_STATS" 
 
 Statistics are computed based on the log file ``binkd.log``, which is searched in your standard husky log directory (cf. the ``FidonetLogsDir`` variable in your husky configuration file.
 
-Development of this program was started (back in 1999) by [Gabriel Plutzar](mailto:gabriel@hit.priv.at), 2:31/1. As Gabriel is no longer active in FidoNet, the program is currently maintained by [Niels Joncheere](https://github.com/njonchee), 2:292/789.
+Development of this program was started (back in 1999) by [Gabriel Plutzar](mailto:gabriel@hit.priv.at), 2:31/1. As Gabriel is no longer active in FidoNet, the program is currently (as of 2018) maintained by [Niels Joncheere](https://github.com/njonchee), 2:292/789.
