@@ -13,7 +13,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 - Improved check of command line arguments
 - 'binkdstat' report is now ordered by node number
 
-## [1999-02-18]
+## 1999-02-18
 
 - Initial release of the project
 
