@@ -1,4 +1,3 @@
-/* $Id$ */
 /*****************************************************************************
 * Fidostat
 *
@@ -46,9 +45,9 @@ typedef struct {
 static char month_names[12][4] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
                                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
-int sessionsort(const void *a, const void *b)
+int sessionsort(const void* a, const void* b)
 {
-    hs_addr addra,addrb;
+	hs_addr addra, addrb;
 
 	// Initialize all struct members to 0 in order to prevent occasional strange sorting behavior:
 	memset(&addra, 0, sizeof(hs_addr));
@@ -57,45 +56,34 @@ int sessionsort(const void *a, const void *b)
 	parseFtnAddrZS(a, &addra);
 	parseFtnAddrZS(b, &addrb);
 
-    if (addra.point==0 && addrb.point>0)
-       return(-1);
+	if (addra.point == 0 && addrb.point > 0)
+		return -1;
+	if (addra.point > 0 && addrb.point == 0)
+		return 1;
 
-    if (addrb.point==0 && addra.point>0)
-       return(1);
+	if (addra.zone != addrb.zone) {
+		if (addra.zone > addrb.zone)
+			return 1;
+		else
+			return -1;
+	} else if (addra.net != addrb.net) {
+		if (addra.net > addrb.net)
+			return 1;
+		else
+			return -1;
+	} else if (addra.node != addrb.node) {
+		if (addra.node > addrb.node)
+			return 1;
+		else
+			return -1;
+	} else if (addra.point != addrb.point) {
+		if (addra.point > addrb.point)
+			return 1;
+		else
+			return -1;
+	}
 
-    if (addra.zone!=addrb.zone)
-       {
-       if (addra.zone>addrb.zone)
-          return(1);
-         else
-          return(-1);
-       }        
-      else
-       if (addra.net!=addrb.net)
-          {
-          if (addra.net>addrb.net)
-             return(1);
-            else
-             return(-1);
-          }
-         else
-          if (addra.node!=addrb.node)
-             {
-             if (addra.node>addrb.node)
-                return(1);
-               else
-                return(-1);
-             }
-            else
-             if (addra.point!=addrb.point)
-                {
-                if (addra.point>addrb.point)
-                   return(1);
-                  else
-                   return(-1);
-                }
-
-    return(0);
+	return 0;
 }
 
 int main(int argc,char **argv)
@@ -173,7 +161,7 @@ int main(int argc,char **argv)
          if (hlp1 != NULL)
             {
             /* Got New Session with LogFile Part - let's get the session
-               and the first Fido Adress */
+               and the first Fido Address */
             getaddr=1;
 			strcpy(session_with, hlp1 + 13);
             continue;
