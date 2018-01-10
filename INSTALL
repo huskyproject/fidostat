@@ -1,24 +1,27 @@
-Unix:
------
+Instructions to build fidostat from source files
+------------------------------------------------
 
-0. Put the fidostat package in the directory where the other packages of fido
-   linux reside:
+0. fidostat depends on the fidoconf, huskylib, and smapi sub-projects of the
+   husky project. It is expected that you have already built these sub-projects,
+   and that you have already installed the corresponding libraries (fidoconfig,
+   husky, and smapi) before attempting to build fidostat.
 
-   /usr/src/packages/        -> fidostat/
-                             -> fidoconfig/
-                             -> smapi/
+1. Put the fidostat package in the directory where the other husky packages
+   reside:
+
+   /usr/src/packages/        -> fidoconf/
+                             -> fidostat/
                              -> huskybse/
+                             -> huskylib/
+                             -> smapi/
+                             ... possibly some other husky packages
 
-1. Read huskybse/INSTALL and other manuals, change huskymak.cfg for your system
+2. Read huskybse/INSTALL, and adapt huskymak.cfg to your system.
 
-2. Compile and install fidostat:
+3. Build and install fidostat:
 
-	$ make
-	$ make install clean
-
-or, without huskymak.cfg:
-
-        $ make -f makefile.lnx
-        $ make -f makefile.lnx install clean
+   $ make clean
+   $ make
+   $ sudo make install
 
 You're ready. 
