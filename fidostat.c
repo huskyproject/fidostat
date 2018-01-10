@@ -38,9 +38,9 @@
 #include "cvsdate.h"
 
 typedef struct {
-	char fidoaka[50];
-	char fromname[100];
-	int count;
+	char node_aka[50];
+	char node_descr[100];
+	int session_count;
 } session_count_type;
 
 static char month_names[12][4] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -104,7 +104,6 @@ int main(int argc,char **argv)
    char session_with[200],firstaddr[200];
    int getaddr=0;
    FILE *binkdlog;
-   int anzsession=0;
    int i;
 
 	char* version_str = GenVersionStr("fidostat", FC_VER_MAJOR, FC_VER_MINOR,
@@ -138,14 +137,17 @@ int main(int argc,char **argv)
 	printf("%s - Log file analyser for binkd\n", version_str);
 	printf("\n");
 	printf("   Date:   %s", ctime(&current_time));
-	printf("   System: %u:%u/%u.%u, %s\n", config->addr[0].zone,
-			config->addr[0].net, config->addr[0].node, config->addr[0].point,
+	printf("   System: %u:%u/%u.%u, %s\n",
+			config->addr[0].zone,
+			config->addr[0].net,
+			config->addr[0].node,
+			config->addr[0].point,
 			config->sysop);
 	printf("\n");
 	printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
 	printf("\n");
 
-	session_count_type* session_count = malloc(500 * sizeof(session_count_type));
+	session_count_type* nodes = malloc(500 * sizeof(session_count_type));
 
    strcpy(hlp,config->logFileDir);
    strcat(hlp,"/binkd.log");
@@ -158,6 +160,7 @@ int main(int argc,char **argv)
       }
 
 	int session_found;
+	size_t node_count = 0;
    while (!feof(binkdlog))
          {
          fgets(hlp,200,binkdlog);
@@ -172,7 +175,7 @@ int main(int argc,char **argv)
             /* Got New Session with LogFile Part - let's get the session
                and the first Fido Adress */
             getaddr=1;
-            strcpy(session_with,(char *)(hlp1+13));
+			strcpy(session_with, hlp1 + 13);
             continue;
             }
 
@@ -181,38 +184,38 @@ int main(int argc,char **argv)
          if (hlp1 != NULL && getaddr==1)
             {
             getaddr=0;
-            strcpy(firstaddr,(char *)(hlp1+6));
+			strcpy(firstaddr, hlp1 + 6);
 
             if (strcasecmp(argv[1],"binkdall")==0)
                printf("%s, %s\n",session_with,firstaddr);
             
 			session_found = 0;
-			for (i = 0; i < anzsession && i < 499; i++) {
-				if (strcmp(firstaddr, session_count[i].fidoaka) == 0) {
+			for (i = 0; i < node_count && i < 499; i++) {
+				if (strcmp(firstaddr, nodes[i].node_aka) == 0) {
 					session_found = 1;
-					session_count[i].count++;
+					nodes[i].session_count++;
 					break;
 				}
 			}
 
 			if (session_found == 0) {
-				strcpy(session_count[anzsession].fidoaka, firstaddr);
-				strcpy(session_count[anzsession].fromname, session_with);
-				session_count[anzsession].count = 1;
-				anzsession++;
+				strcpy(nodes[node_count].node_aka, firstaddr);
+				strcpy(nodes[node_count].node_descr, session_with);
+				nodes[node_count].session_count = 1;
+				node_count++;
 			}
 		}
 	}
 
 	if (strcasecmp(argv[1], "binkdstat") == 0) {
 
-		qsort(session_count, anzsession, sizeof(session_count_type), sessionsort);
+		qsort(nodes, node_count, sizeof(session_count_type), sessionsort);
 
-		for (i = 0; i < anzsession; i++) {
+		for (i = 0; i < node_count; i++) {
 			printf("%3u Sessions with %s, %s\n",
-					session_count[i].count,
-					session_count[i].fidoaka,
-					session_count[i].fromname);
+					nodes[i].session_count,
+					nodes[i].node_aka,
+					nodes[i].node_descr);
 		}
 	}
 
