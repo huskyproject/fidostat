@@ -37,11 +37,11 @@
 
 #include "cvsdate.h"
 
-struct sessioncounttype {
-       char fidoaka[50];
-       char fromname[100];
-       int count;
-       } *sessioncount;
+typedef struct {
+	char fidoaka[50];
+	char fromname[100];
+	int count;
+} session_count_type;
 
 static char month_names[12][4] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
                                    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
@@ -104,7 +104,7 @@ int main(int argc,char **argv)
    char session_with[200],firstaddr[200];
    int getaddr=0;
    FILE *binkdlog;
-   int anzsession=0,sessionfound;
+   int anzsession=0;
    int i;
 
 	char* version_str = GenVersionStr("fidostat", FC_VER_MAJOR, FC_VER_MINOR,
@@ -145,7 +145,7 @@ int main(int argc,char **argv)
 	printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
 	printf("\n");
 
-   sessioncount=malloc(500*sizeof(*sessioncount));
+	session_count_type* session_count = malloc(500 * sizeof(session_count_type));
 
    strcpy(hlp,config->logFileDir);
    strcat(hlp,"/binkd.log");
@@ -157,6 +157,7 @@ int main(int argc,char **argv)
       exit(3);
       }
 
+	int session_found;
    while (!feof(binkdlog))
          {
          fgets(hlp,200,binkdlog);
@@ -185,39 +186,38 @@ int main(int argc,char **argv)
             if (strcasecmp(argv[1],"binkdall")==0)
                printf("%s, %s\n",session_with,firstaddr);
             
-            sessionfound=0;
-            for (i=0;i<anzsession && i<499;i++)
-                if (strcmp(firstaddr,sessioncount[i].fidoaka)==0)
-                   {
-                   sessionfound=1;
-                   sessioncount[i].count++;
-                   break;
-                   }
+			session_found = 0;
+			for (i = 0; i < anzsession && i < 499; i++) {
+				if (strcmp(firstaddr, session_count[i].fidoaka) == 0) {
+					session_found = 1;
+					session_count[i].count++;
+					break;
+				}
+			}
 
-            if (sessionfound==0)
-               {
-               strcpy(sessioncount[anzsession].fidoaka,firstaddr);
-               strcpy(sessioncount[anzsession].fromname,session_with);
-               sessioncount[anzsession].count=1;
-               anzsession++;
-               }
+			if (session_found == 0) {
+				strcpy(session_count[anzsession].fidoaka, firstaddr);
+				strcpy(session_count[anzsession].fromname, session_with);
+				session_count[anzsession].count = 1;
+				anzsession++;
+			}
+		}
+	}
 
-            }
-         }
+	if (strcasecmp(argv[1], "binkdstat") == 0) {
 
-  if (strcasecmp(argv[1],"binkdstat")==0)
-     {
-     qsort(sessioncount,anzsession,
-           sizeof(*sessioncount),sessionsort);
+		qsort(session_count, anzsession, sizeof(session_count_type), sessionsort);
 
-     for (i=0;i<anzsession;i++)
-         printf("%3u Sessions with %s, %s\n",sessioncount[i].count,
-                sessioncount[i].fidoaka,sessioncount[i].fromname);
-     }
-  fclose(binkdlog);
+		for (i = 0; i < anzsession; i++) {
+			printf("%3u Sessions with %s, %s\n",
+					session_count[i].count,
+					session_count[i].fidoaka,
+					session_count[i].fromname);
+		}
+	}
 
-  disposeConfig(config);
-  return 0;
+	fclose(binkdlog);
+	disposeConfig(config);
+
+	return 0;
 }
-
-
