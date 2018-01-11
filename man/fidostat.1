@@ -1,0 +1,21 @@
+.TH FIDOSTAT 1 "Log file analyser for binkd" "February 2018" "Log file analyser for binkd"
+.SH NAME
+fidostat \- generate report on today's binkd connections
+.SH SYNOPSIS
+fidostat [binkdall | binkdstat]
+.SH DESCRIPTION
+fidostat is a a log file analyser for the binkd TCP/IP FTN mailer. It is intended to be used for seeing which systems have polled (or have been polled by) the user's system today.
+.SH OPTIONS
+.IP binkdall
+List all binkd connections (one line per connection, i.e., possibly more than one line per node)
+.IP binkdstat
+Summarize binkd connections (one line per node)
+.SH FILES
+.IP binkd.log
+The binkd log file, which is expected to be present in the husky log directory (specified using the FidonetLogsDir variable in your husky configuration file).
+.SH BUGS
+There are currently no known issues with fidostat. Any discovered issues may be reported via https://github.com/huskyproject/fidostat.
+.SH AUTHORS
+1999: Gabriel Plutzar, 2:31/1
+.br
+2018: Niels Joncheere, 2:292/789
