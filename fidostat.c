@@ -101,8 +101,8 @@ int main(int argc, char* argv[])
 	FILE* binkdlog;
 	int i;
 
-	char* version_str = GenVersionStr("fidostat", FC_VER_MAJOR, FC_VER_MINOR,
-			FC_VER_PATCH, FC_VER_BRANCH, cvs_date);
+	char* version_str = GenVersionStr("fidostat", fidoconf_VER_MAJOR, fidoconf_VER_MINOR,
+			fidoconf_VER_PATCH, fidoconf_VER_BRANCH, cvs_date);
 
 	if (!valid_args(argc, argv)) {
 		fprintf(stderr, "%s - Log file analyser for binkd\n", version_str);
