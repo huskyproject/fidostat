@@ -39,9 +39,8 @@ distclean: clean
 
 install:
 	$(INSTALL) $(IBOPT) fidostat$(_EXE) $(BINDIR)
-	-$(MKDIR) $(MKDIROPT) $(DESTDIR)$(MANDIR)
-	-$(MKDIR) $(MKDIROPT) $(DESTDIR)$(MANDIR)/man1
-	$(INSTALL) $(IMOPT) fidostat.1.gz $(DESTDIR)$(MANDIR)/man1
+	-$(MKDIR) $(MKDIROPT) $(MAN1DIR)
+	$(INSTALL) $(IMOPT) fidostat.1.gz $(MAN1DIR)
 
 uninstall:
 	-$(RM) $(RMOPT) $(BINDIR)$(DIRSEP)fidostat$(_EXE)
