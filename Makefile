@@ -11,11 +11,7 @@ else
   LFLAGS  = $(OPTLFLAGS)
 endif
 
-ifeq ($(SHORTNAME), 1)
   LIBS  = -L$(LIBDIR) -lfidoconf -lhusky -lsmapi
-else
-  LIBS  = -L$(LIBDIR) -lfidoconfig -lhusky -lsmapi
-endif
 
 CDEFS=-D$(OSTYPE) $(ADDCDEFS)
 
