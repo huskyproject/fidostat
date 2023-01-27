@@ -1,19 +1,22 @@
 # include Husky-Makefile-Config
 include ../huskymak.cfg
 
-OBJS    = fidostat$(_OBJ)
+OBJS = fidostat$(_OBJ)
+
+HUSKYLIB = ../huskylib
+FIDOCONF = ../fidoconf
 
 ifeq ($(DEBUG), 1)
-  CFLAGS  = $(DEBCFLAGS) $(WARNFLAGS) -I$(INCDIR)
-  LFLAGS  = $(DEBLFLAGS)
+  CFLAGS = $(DEBCFLAGS) $(WARNFLAGS) -I$(HUSKYLIB) -I$(FIDOCONF)
+  LFLAGS = $(DEBLFLAGS)
 else
-  CFLAGS  = $(OPTCFLAGS) $(WARNFLGAS)-c -I$(INCDIR)
-  LFLAGS  = $(OPTLFLAGS)
+  CFLAGS = $(OPTCFLAGS) $(WARNFLGAS) -c -I$(HUSKYLIB) -I$(FIDOCONF)
+  LFLAGS = $(OPTLFLAGS)
 endif
 
-  LIBS  = -L$(LIBDIR) -lfidoconf -lhusky -lsmapi
+LIBS = -L$(LIBDIR) -lfidoconf -lhusky -lsmapi
 
-CDEFS=-D$(OSTYPE) $(ADDCDEFS)
+CDEFS = -D$(OSTYPE) $(ADDCDEFS)
 
 all: fidostat$(_EXE) fidostat.1.gz
 

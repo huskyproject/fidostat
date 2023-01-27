@@ -29,6 +29,7 @@
 #include <fidoconf/version.h>
 
 #include "cvsdate.h"
+#include "version.h"
 
 typedef struct {
 	char node_aka[50];
@@ -101,8 +102,7 @@ int main(int argc, char* argv[])
 	FILE* binkdlog;
 	int i;
 
-	char* version_str = GenVersionStr("fidostat", FC_VER_MAJOR, FC_VER_MINOR,
-			FC_VER_PATCH, FC_VER_BRANCH, cvs_date);
+	char* version_str = GenVersionStr("fidostat", fidostat_VER_MAJOR, fidostat_VER_MINOR, fidostat_VER_PATCH, fidostat_VER_BRANCH, cvs_date);
 
 	if (!valid_args(argc, argv)) {
 		fprintf(stderr, "%s - Log file analyser for binkd\n", version_str);
